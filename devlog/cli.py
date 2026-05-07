@@ -1,4 +1,4 @@
-"""CLI commands for devlog using Click."""
+"""CLI commands for devlog using Click — bilingual (EN default, -idn for ID)."""
 
 import click
 from datetime import datetime
@@ -21,14 +21,30 @@ from .display import (
     show_entry_not_found,
     show_export_success,
     show_stats,
+    get_confirm_delete,
+    get_no_export_msg,
 )
+
+
+def _lang(idn: bool) -> str:
+    """Return language code based on flag."""
+    return "idn" if idn else "en"
 
 
 @click.group()
 @click.version_option(version=__version__, prog_name="devlog-cli")
 def cli():
-    """Catat progress harianmu langsung dari terminal."""
+    """Track your daily dev progress from the terminal. / Catat progress harianmu dari terminal."""
     pass
+
+
+@cli.command()
+@click.argument("message")
+@click.option("--tag", "-t", default=None, help="Tag for entry category")
+def add(message: str, tag: str) -> None:
+    """Add a new log entry."""
+    entry = add_entry(message, tag)
+    show_add_success(entry)
 
 
 @cli.command()
@@ -41,23 +57,42 @@ def tambah(message: str, tag: str) -> None:
 
 
 @cli.command("list")
-@click.option("--minggu", "-m", is_flag=True, help="Tampilkan log minggu ini")
-@click.option("--semua", "-s", is_flag=True, help="Tampilkan semua log")
-@click.option("--tag", "-t", default=None, help="Filter berdasarkan tag")
-def list_entries(minggu: bool, semua: bool, tag: str) -> None:
-    """Tampilkan daftar log."""
+@click.option("--week", "-w", is_flag=True, help="Show this week's log")
+@click.option("--all", "-a", "all_entries", is_flag=True, help="Show all logs")
+@click.option("--tag", "-t", default=None, help="Filter by tag")
+@click.option("-idn", is_flag=True, help="Tampilkan dalam Bahasa Indonesia")
+def list_entries(week: bool, all_entries: bool, tag: str, idn: bool) -> None:
+    """List log entries. Use -idn for Indonesian."""
+    lang = _lang(idn)
     if tag:
         entries = get_entries_by_tag(tag)
-        show_entry_table(entries, title=f"📋 Log — Tag: {tag}")
-    elif semua:
+        show_entry_table(entries, lang=lang, title_key="title_tag", tag_filter=tag)
+    elif all_entries:
         entries = get_entries_all()
-        show_entry_table(entries, title="📋 Semua Log")
-    elif minggu:
+        show_entry_table(entries, lang=lang, title_key="title_all")
+    elif week:
         entries = get_entries_week()
-        show_entry_table(entries, title="📋 Log Minggu Ini")
+        show_entry_table(entries, lang=lang, title_key="title_week")
     else:
         entries = get_entries_today()
-        show_entry_table(entries, title="📋 Log Hari Ini")
+        show_entry_table(entries, lang=lang, title_key="title_today")
+
+
+@cli.command()
+@click.argument("entry_id", type=int)
+def delete(entry_id: int) -> None:
+    """Delete an entry by ID."""
+    entry = get_entry_by_id(entry_id)
+    if entry is None:
+        show_entry_not_found(entry_id)
+        return
+
+    click.confirm(
+        f'Are you sure you want to delete entry #{entry_id}? "{entry.message}"',
+        abort=True,
+    )
+    delete_entry(entry_id)
+    show_delete_success(entry_id)
 
 
 @cli.command()
@@ -66,51 +101,59 @@ def hapus(entry_id: int) -> None:
     """Hapus entri berdasarkan ID."""
     entry = get_entry_by_id(entry_id)
     if entry is None:
-        show_entry_not_found(entry_id)
+        show_entry_not_found(entry_id, lang="idn")
         return
 
     click.confirm(
-        f"Yakin ingin menghapus entri #{entry_id}? "
-        f'"{entry.message}"',
+        f'Yakin ingin menghapus entri #{entry_id}? "{entry.message}"',
         abort=True,
     )
     delete_entry(entry_id)
-    show_delete_success(entry_id)
+    show_delete_success(entry_id, lang="idn")
 
 
 @cli.command()
-@click.option("--periode", "-p", type=click.Choice(["hari", "minggu"]), default="hari",
-              help="Periode export (hari/minggu)")
-@click.option("--output", "-o", default=None, help="Nama file output")
-def export(periode: str, output: str) -> None:
-    """Export log ke file Markdown."""
-    if periode == "minggu":
+@click.option("--period", "-p", type=click.Choice(["day", "week"]),
+              default="day", help="Export period: day or week")
+@click.option("--output", "-o", default=None, help="Output filename")
+@click.option("-idn", is_flag=True, help="Tampilkan dalam Bahasa Indonesia")
+def export(period: str, output: str, idn: bool) -> None:
+    """Export logs to a Markdown file. Use -idn for Indonesian."""
+    lang = _lang(idn)
+
+    if period == "week":
         entries = get_entries_week()
-        period_label = "minggu ini"
     else:
         entries = get_entries_today()
-        period_label = "hari ini"
 
     if not entries:
-        click.echo("Tidak ada entri untuk diekspor.")
+        click.echo(get_no_export_msg(lang))
         return
 
     if output is None:
         today = datetime.now().strftime("%Y-%m-%d")
         output = f"devlog-{today}.md"
 
+    period_label = period.title()
     content = _generate_markdown(entries, period_label)
     with open(output, "w", encoding="utf-8") as f:
         f.write(content)
 
-    show_export_success(output, len(entries))
+    show_export_success(output, len(entries), lang=lang)
 
 
 @cli.command()
-def statistik() -> None:
-    """Tampilkan statistik dev log."""
-    stats = get_stats()
-    show_stats(stats)
+@click.option("-idn", is_flag=True, help="Tampilkan dalam Bahasa Indonesia")
+def stats(idn: bool) -> None:
+    """Show dev log statistics. Use -idn for Indonesian."""
+    show_stats(get_stats(), lang=_lang(idn))
+
+
+@cli.command()
+@click.option("-idn", is_flag=True, help="Tampilkan dalam Bahasa Indonesia")
+def statistik(idn: bool) -> None:
+    """Tampilkan statistik dev log. Gunakan -idn untuk Bahasa Indonesia."""
+    show_stats(get_stats(), lang=_lang(idn))
 
 
 def _generate_markdown(entries, period_label: str) -> str:
@@ -123,7 +166,7 @@ def _generate_markdown(entries, period_label: str) -> str:
     Returns:
         Markdown formatted string.
     """
-    lines = [f"# DevLog — {period_label.title()}\n"]
+    lines = [f"# DevLog — {period_label}\n"]
     for entry in entries:
         tag_str = f" [{entry.tag}]" if entry.tag else ""
         waktu = entry.created_at if entry.created_at else ""

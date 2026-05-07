@@ -1,7 +1,7 @@
 # devlog-cli
 
-> Catat progress harianmu langsung dari terminal.
 > Track your daily dev progress right from the terminal.
+> Catat progress harianmu langsung dari terminal.
 
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
@@ -21,37 +21,52 @@ cd devlog-cli
 pip install -e .
 ```
 
+### Bahasa
+
+Output perintah **info** (list, stats, export) secara default ditampilkan dalam **Bahasa Inggris**.  
+Gunakan flag **`-idn`** untuk menampilkan dalam **Bahasa Indonesia**.  
+Perintah **aksi** (add, tambah, delete, hapus) otomatis mengikuti bahasa perintah — tidak perlu `-idn`.
+
 ### Cara Pakai
 
 **Tambah entri log:**
 ```bash
-devlog tambah "Selesai modul auth, masih stuck di refresh token"
-devlog tambah "Fix bug login" --tag bug
+devlog add "Fix bug login" --tag bug
+devlog tambah "Selesai modul auth" --tag feature
 ```
 
 **Lihat daftar log:**
 ```bash
-devlog list                    # log hari ini (default)
-devlog list --minggu           # log minggu ini
-devlog list --semua            # semua log
-devlog list --tag bug          # filter berdasarkan tag
+devlog list                        # log hari ini (English)
+devlog list -idn                   # log hari ini (Bahasa Indonesia)
+devlog list --week                 # log minggu ini (English)
+devlog list --week -idn            # log minggu ini (Bahasa Indonesia)
+devlog list --all                  # semua log (English)
+devlog list --all -idn             # semua log (Bahasa Indonesia)
+devlog list --tag bug              # filter berdasarkan tag (English)
+devlog list --tag bug -idn         # filter berdasarkan tag (Bahasa Indonesia)
 ```
 
 **Export log ke Markdown:**
 ```bash
-devlog export                  # export hari ini ke devlog-YYYY-MM-DD.md
-devlog export --periode minggu # export log minggu ini
-devlog export -o catatanku.md  # export ke file kustom
+devlog export                      # export hari ini (English)
+devlog export -idn                 # export hari ini (Bahasa Indonesia)
+devlog export --period week        # export minggu ini (English)
+devlog export --period week -idn   # export minggu ini (Bahasa Indonesia)
+devlog export -o catatanku.md      # export ke file kustom
 ```
 
 **Hapus entri:**
 ```bash
-devlog hapus 3                 # hapus entri berdasarkan ID (ada konfirmasi)
+devlog delete 3                    # hapus entri berdasarkan ID (English)
+devlog hapus 3                     # hapus entri berdasarkan ID (Bahasa Indonesia)
 ```
 
 **Lihat statistik:**
 ```bash
-devlog statistik               # total entri, streak, tag terbanyak
+devlog stats                       # statistik dev log (English)
+devlog stats -idn                  # statistik dev log (Bahasa Indonesia)
+devlog statistik -idn              # sama, dengan perintah Indonesia
 ```
 
 ### Teknologi
@@ -80,37 +95,52 @@ cd devlog-cli
 pip install -e .
 ```
 
+### Language
+
+**Info commands** (list, stats, export) display output in **English by default**.  
+Use the **`-idn`** flag to display in **Indonesian (Bahasa Indonesia)**.  
+**Action commands** (add, tambah, delete, hapus) follow the command language — no `-idn` needed.
+
 ### Usage
 
 **Add a log entry:**
 ```bash
-devlog tambah "Finished auth module, still stuck on refresh token"
-devlog tambah "Fix login bug" --tag bug
+devlog add "Fix login bug" --tag bug
+devlog tambah "Selesai modul auth" --tag feature
 ```
 
 **List log entries:**
 ```bash
-devlog list                    # today's log (default)
-devlog list --minggu           # this week's log
-devlog list --semua            # all logs
-devlog list --tag bug          # filter by tag
+devlog list                        # today's log (English, default)
+devlog list -idn                   # today's log (Indonesian)
+devlog list --week                 # this week's log (English)
+devlog list --week -idn            # this week's log (Indonesian)
+devlog list --all                  # all logs (English)
+devlog list --all -idn             # all logs (Indonesian)
+devlog list --tag bug              # filter by tag (English)
+devlog list --tag bug -idn         # filter by tag (Indonesian)
 ```
 
 **Export log to Markdown:**
 ```bash
-devlog export                  # export today to devlog-YYYY-MM-DD.md
-devlog export --periode minggu # export this week's log
-devlog export -o mylog.md      # export to custom file
+devlog export                      # export today (English)
+devlog export -idn                 # export today (Indonesian)
+devlog export --period week        # export this week (English)
+devlog export --period week -idn   # export this week (Indonesian)
+devlog export -o mylog.md          # export to custom file
 ```
 
 **Delete an entry:**
 ```bash
-devlog hapus 3                 # delete entry by ID (with confirmation)
+devlog delete 3                    # delete entry by ID (English)
+devlog hapus 3                     # delete entry by ID (Indonesian)
 ```
 
 **View statistics:**
 ```bash
-devlog statistik               # total entries, streak, top tags
+devlog stats                       # dev log statistics (English)
+devlog stats -idn                  # dev log statistics (Indonesian)
+devlog statistik -idn              # same, with Indonesian command
 ```
 
 ### Tech Stack
