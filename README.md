@@ -9,80 +9,6 @@
 
 ---
 
-## 🇮🇩 Bahasa Indonesia
-
-`devlog-cli` adalah tool CLI untuk developer mencatat progress harian, blocker, dan catatan langsung dari terminal — tanpa perlu buka Notion atau aplikasi lain.
-
-### Instalasi
-
-```bash
-git clone https://github.com/irham-s-a/devlog-cli.git
-cd devlog-cli
-pip install -e .
-```
-
-### Bahasa
-
-Output perintah **info** (list, stats, export) secara default ditampilkan dalam **Bahasa Inggris**.  
-Gunakan flag **`-idn`** untuk menampilkan dalam **Bahasa Indonesia**.  
-Perintah **aksi** (add, tambah, delete, hapus) otomatis mengikuti bahasa perintah — tidak perlu `-idn`.
-
-### Cara Pakai
-
-**Tambah entri log:**
-```bash
-devlog add "Fix bug login" --tag bug
-devlog tambah "Selesai modul auth" --tag feature
-```
-
-**Lihat daftar log:**
-```bash
-devlog list                        # log hari ini (English)
-devlog list -idn                   # log hari ini (Bahasa Indonesia)
-devlog list --week                 # log minggu ini (English)
-devlog list --week -idn            # log minggu ini (Bahasa Indonesia)
-devlog list --all                  # semua log (English)
-devlog list --all -idn             # semua log (Bahasa Indonesia)
-devlog list --tag bug              # filter berdasarkan tag (English)
-devlog list --tag bug -idn         # filter berdasarkan tag (Bahasa Indonesia)
-```
-
-**Export log ke Markdown:**
-```bash
-devlog export                      # export hari ini (English)
-devlog export -idn                 # export hari ini (Bahasa Indonesia)
-devlog export --period week        # export minggu ini (English)
-devlog export --period week -idn   # export minggu ini (Bahasa Indonesia)
-devlog export -o catatanku.md      # export ke file kustom
-```
-
-**Hapus entri:**
-```bash
-devlog delete 3                    # hapus entri berdasarkan ID (English)
-devlog hapus 3                     # hapus entri berdasarkan ID (Bahasa Indonesia)
-```
-
-**Lihat statistik:**
-```bash
-devlog stats                       # statistik dev log (English)
-devlog stats -idn                  # statistik dev log (Bahasa Indonesia)
-devlog statistik -idn              # sama, dengan perintah Indonesia
-```
-
-### Teknologi
-
-- Python 3.10+
-- [Click](https://click.palletsprojects.com/) — framework CLI
-- [Rich](https://rich.readthedocs.io/) — tampilan terminal
-- SQLite — database lokal
-- pytest — testing
-
-### Kontribusi
-
-Pull request dan issue sangat diterima! Silakan fork repo ini dan buat branch baru untuk fitur atau perbaikan.
-
----
-
 ## 🇬🇧 English
 
 `devlog-cli` is a CLI tool for developers to track daily progress, blockers, and notes right from the terminal — no need to open Notion or other apps.
@@ -154,6 +80,80 @@ devlog statistik -idn              # same, with Indonesian command
 ### Contributing
 
 Pull requests and issues are welcome! Feel free to fork this repo and create a new branch for features or fixes.
+
+---
+
+## 🇮🇩 Bahasa Indonesia
+
+`devlog-cli` adalah tool CLI untuk developer mencatat progress harian, blocker, dan catatan langsung dari terminal — tanpa perlu buka Notion atau aplikasi lain.
+
+### Instalasi
+
+```bash
+git clone https://github.com/irham-s-a/devlog-cli.git
+cd devlog-cli
+pip install -e .
+```
+
+### Bahasa
+
+Output perintah **info** (list, stats, export) secara default ditampilkan dalam **Bahasa Inggris**.  
+Gunakan flag **`-idn`** untuk menampilkan dalam **Bahasa Indonesia**.  
+Perintah **aksi** (add, tambah, delete, hapus) otomatis mengikuti bahasa perintah — tidak perlu `-idn`.
+
+### Cara Pakai
+
+**Tambah entri log:**
+```bash
+devlog add "Fix bug login" --tag bug
+devlog tambah "Selesai modul auth" --tag feature
+```
+
+**Lihat daftar log:**
+```bash
+devlog list                        # log hari ini (English)
+devlog list -idn                   # log hari ini (Bahasa Indonesia)
+devlog list --week                 # log minggu ini (English)
+devlog list --week -idn            # log minggu ini (Bahasa Indonesia)
+devlog list --all                  # semua log (English)
+devlog list --all -idn             # semua log (Bahasa Indonesia)
+devlog list --tag bug              # filter berdasarkan tag (English)
+devlog list --tag bug -idn         # filter berdasarkan tag (Bahasa Indonesia)
+```
+
+**Export log ke Markdown:**
+```bash
+devlog export                      # export hari ini (English)
+devlog export -idn                 # export hari ini (Bahasa Indonesia)
+devlog export --period week        # export minggu ini (English)
+devlog export --period week -idn   # export minggu ini (Bahasa Indonesia)
+devlog export -o catatanku.md      # export ke file kustom
+```
+
+**Hapus entri:**
+```bash
+devlog delete 3                    # hapus entri berdasarkan ID (English)
+devlog hapus 3                     # hapus entri berdasarkan ID (Bahasa Indonesia)
+```
+
+**Lihat statistik:**
+```bash
+devlog stats                       # statistik dev log (English)
+devlog stats -idn                  # statistik dev log (Bahasa Indonesia)
+devlog statistik -idn              # sama, dengan perintah Indonesia
+```
+
+### Teknologi
+
+- Python 3.10+
+- [Click](https://click.palletsprojects.com/) — framework CLI
+- [Rich](https://rich.readthedocs.io/) — tampilan terminal
+- SQLite — database lokal
+- pytest — testing
+
+### Kontribusi
+
+Pull request dan issue sangat diterima! Silakan fork repo ini dan buat branch baru untuk fitur atau perbaikan.
 
 ---
 
